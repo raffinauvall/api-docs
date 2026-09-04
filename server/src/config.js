@@ -28,8 +28,15 @@ export const config = {
   },
 
   portal: {
-    host: process.env.PORTAL_HOST || '',
-    corp: process.env.PORTAL_CORP || ''
+    authUrl:
+      process.env.PORTAL_AUTH_URL ||
+      (process.env.PORTAL_HOST ? `${process.env.PORTAL_HOST.replace(/\/$/, '')}/auth/login` : ''),
+    basicUsername: process.env.PORTAL_BASIC_USERNAME || '',
+    basicPassword: process.env.PORTAL_BASIC_PASSWORD || '',
+    corpId: process.env.CORP_ID || process.env.PORTAL_CORP || '',
+    appKey: process.env.APP_KEY || '',
+    businessUnitField: process.env.PORTAL_BUSINESS_UNIT_FIELD || 'business_unit',
+    defaultBusinessUnit: process.env.DEFAULT_BUSINESS_UNIT || ''
   },
 
   github: {

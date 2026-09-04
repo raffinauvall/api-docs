@@ -5,7 +5,7 @@ import { useAuth } from '../auth'
 export default function Login() {
   const { user, login, devLogin } = useAuth()
   const navigate = useNavigate()
-  const [email, setEmail] = useState('')
+  const [nik, setNik] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
@@ -17,7 +17,7 @@ export default function Login() {
     setError('')
     setBusy(true)
     try {
-      await login(email, password)
+      await login(nik, password)
       navigate('/')
     } catch (err) {
       setError(err.message)
@@ -45,10 +45,10 @@ export default function Login() {
         <h1>API Docs</h1>
         <p className="muted">Login pakai SSO Portal SMG</p>
 
-        <label>NIK / Email</label>
+        <label>NIK</label>
         <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={nik}
+          onChange={(e) => setNik(e.target.value)}
           placeholder="NIK anda"
           autoComplete="username"
         />

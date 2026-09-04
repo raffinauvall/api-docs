@@ -1,7 +1,7 @@
-import crypto from 'node:crypto'
 import { Router } from 'express'
 import { config } from '../config.js'
 import { requireAuth } from '../auth/middleware.js'
+import { loginPortal } from '../auth/portal.js'
 import { upsertUser } from '../repos/users.js'
 
 export const authRouter = Router()
@@ -16,81 +16,27 @@ authRouter.post('/logout', (req, res) => {
   req.session.destroy(() => res.json({ ok: true }))
 })
 
-// POST /api/auth/login — SSO ke Portal SMG (pola SMG-EMPmvp)
+// POST /api/auth/login — SSO ke Portal SMG (pola chatbot-analyzer)
 authRouter.post('/login', async (req, res) => {
   try {
-    const { email, password } = req.body || {}
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email dan password wajib diisi' })
+    const { email, nik: bodyNik, password, businessUnit } = req.body || {}
+    if (!(email || bodyNik) || !password) {
+      return res.status(400).json({ error: 'NIK dan password wajib diisi' })
     }
 
-    const nik = String(email).trim()
-    const portalHost = (config.portal.host || '').replace(/\/$/, '')
-    const portalCorp = config.portal.corp
-
-    if (!portalHost || !portalCorp) {
-      return res.status(503).json({ error: 'Layanan autentikasi tidak tersedia.' })
-    }
-
-    let portalName = nik
-    let portalBu = null
-    let portalEmail = null
-    let portalAvatar = null
-    let portalRole = 'user'
-
-    try {
-      const url = `${portalHost}/auth/login`
-      const pr = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-Corp': portalCorp,
-          'Accept-Language': 'id'
-        },
-        body: JSON.stringify({ username: nik, password, device: 'Web' })
-      })
-
-      const portalBody = await pr.json().catch(() => ({}))
-      if (portalBody.reff === 'multiple-nik') {
-        return res.status(400).json({
-          error: 'NIK terdaftar di beberapa BU. Hubungi admin untuk penanganan.',
-          multipleBu: true
-        })
-      }
-      if (!pr.ok) {
-        return res.status(401).json({ error: 'NIK atau password salah' })
-      }
-
-      // Simpan portal token ke session (digunakan untuk keperluan integrasi lain)
-      const tok = portalBody?.data?.token
-      if (tok?.access) {
-        req.session.portalToken = {
-          access: tok.access,
-          refresh: tok.refresh,
-          expAccess: tok.expAccess,
-          expRefresh: tok.expRefresh
-        }
-      }
-
-      const prof = portalBody?.data || {}
-      portalName = prof.name || prof.fullName || prof.user?.name || nik
-      portalEmail = prof.email || prof.user?.email || null
-      portalAvatar = prof.avatar || prof.user?.avatar || prof.picture || null
-      portalBu = prof.bu?.title || prof.bu?.name || prof.user?.bu?.name || prof.userBu?.name || null
-      portalRole = prof.role || prof.user?.role || 'user'
-    } catch (e) {
-      console.error('[portal] Auth error:', e.message)
-      return res.status(503).json({ error: 'Layanan autentikasi tidak tersedia. Coba lagi.' })
-    }
+    const nik = String(bodyNik || email).trim()
+    const portalUser = await loginPortal(nik, password, businessUnit)
+    if (portalUser.token) req.session.portalToken = portalUser.token
+    const userNik = portalUser.nik || nik
 
     // Provision / update user lokal
     const user = await upsertUser({
-      email: portalEmail,
-      name: portalName,
-      avatar: portalAvatar,
-      nik,
-      role: portalRole,
-      bu: portalBu
+      email: portalUser.email || null,
+      name: portalUser.name,
+      avatar: portalUser.avatar || null,
+      nik: userNik,
+      role: portalUser.role,
+      bu: portalUser.bu || null
     })
 
     req.session.user = {
@@ -105,8 +51,12 @@ authRouter.post('/login', async (req, res) => {
 
     res.json({ user: req.session.user })
   } catch (err) {
+    if (err.code === 'PORTAL_CONFIG') {
+      console.error('[portal] Config error:', err.message)
+      return res.status(503).json({ error: 'Layanan autentikasi tidak tersedia.' })
+    }
     console.error('Login error:', err.message)
-    res.status(500).json({ error: 'Server error. Coba lagi.' })
+    res.status(err.status || 500).json({ error: err.status ? err.message : 'Server error. Coba lagi.' })
   }
 })
 
