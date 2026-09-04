@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Shell(git -C /home/raffinauval/project/api-docs status --short && git -C /home/raffinauval/project/api-docs log --oneline -5 2>/dev/null; echo \"---\"; ls -la /home/raffinauval/project/api-docs)"
+    ],
+    "deny": [],
+    "defaultMode": "default"
+  }
+}
