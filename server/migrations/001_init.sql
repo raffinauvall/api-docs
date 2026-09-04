@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS apis (
   name        TEXT NOT NULL,
   slug        TEXT NOT NULL,
   description TEXT,
+  base_url    TEXT,
   created_by  UUID REFERENCES users(id) ON DELETE SET NULL,
   created_at  TIMESTAMPTZ DEFAULT now(),
   updated_at  TIMESTAMPTZ DEFAULT now(),

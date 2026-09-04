@@ -17,7 +17,8 @@ class GitHubProvider {
 
   // repository: "owner/repo", filePath: "docs/openapi.yml", ref: "main"
   async getFile(repository, filePath, ref) {
-    const url = `https://api.github.com/repos/${repository}/contents/${encodeURIComponent(filePath)}?ref=${encodeURIComponent(ref)}`
+    const safePath = filePath.split('/').map(encodeURIComponent).join('/')
+    const url = `https://api.github.com/repos/${repository}/contents/${safePath}?ref=${encodeURIComponent(ref)}`
     const r = await fetch(url, { headers: this._headers() })
     if (r.status === 404) {
       const e = new Error(`File tidak ditemukan: ${filePath}`)
@@ -51,6 +52,31 @@ class GitHubProvider {
     }
     const data = await r.json()
     return data[0]?.sha || null
+  }
+
+  async listFiles(repository, ref) {
+    const sha = await this.getLatestCommit(repository, ref)
+    if (!sha) return []
+    const url = `https://api.github.com/repos/${repository}/git/trees/${sha}?recursive=1`
+    const r = await fetch(url, { headers: this._headers() })
+    if (!r.ok) {
+      const e = new Error(`Gagal scan repository GitHub (${r.status})`)
+      e.status = r.status
+      throw e
+    }
+    const data = await r.json()
+    return (data.tree || []).filter((item) => item.type === 'blob').map((item) => item.path)
+  }
+
+  async listBranches(repository) {
+    const url = `https://api.github.com/repos/${repository}/branches?per_page=100`
+    const r = await fetch(url, { headers: this._headers() })
+    if (!r.ok) {
+      const e = new Error(`Gagal ambil branch dari GitHub (${r.status})`)
+      e.status = r.status
+      throw e
+    }
+    return (await r.json()).map((branch) => branch.name)
   }
 }
 

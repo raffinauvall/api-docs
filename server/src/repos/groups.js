@@ -30,6 +30,18 @@ export async function getGroupById(id) {
   return (await query('SELECT * FROM api_groups WHERE id = $1', [id])).rows[0]
 }
 
+export async function createGroupForClient(client, { name, slug }) {
+  return (
+    await client.query(
+      `INSERT INTO api_groups (name, slug)
+       VALUES ($1, $2)
+       ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, updated_at = now()
+       RETURNING *`,
+      [name, slug]
+    )
+  ).rows[0]
+}
+
 export async function createGroup({ name, slug, description, createdBy }) {
   return (
     await query(

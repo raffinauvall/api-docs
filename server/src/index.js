@@ -11,6 +11,7 @@ import { apisRouter } from './routes/apis.js'
 import { versionsRouter } from './routes/versions.js'
 import { endpointsRouter } from './routes/endpoints.js'
 import { webhookRouter } from './routes/webhooks.js'
+import { proxyRouter } from './routes/proxy.js'
 
 const app = express()
 app.set('trust proxy', 1)
@@ -22,6 +23,8 @@ app.use(
     credentials: true
   })
 )
+// Webhooks must read the raw payload before express.json() consumes it.
+app.use('/webhooks', webhookRouter)
 app.use(express.json({ limit: '1mb' }))
 app.use(sessionMiddleware)
 
@@ -34,7 +37,7 @@ app.use('/api/groups', groupsRouter)
 app.use('/api/apis', apisRouter)
 app.use('/api/versions', versionsRouter)
 app.use('/api/endpoints', endpointsRouter)
-app.use('/webhooks', webhookRouter)
+app.use('/api/proxy', proxyRouter)
 
 app.use(errorHandler)
 

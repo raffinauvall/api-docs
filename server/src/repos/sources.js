@@ -53,3 +53,20 @@ export async function updateSource(id, fields) {
   )
   return res.rows[0]
 }
+
+export async function updateSourceForClient(client, id, fields) {
+  const keys = []
+  const values = []
+  let i = 1
+  for (const [k, v] of Object.entries(fields)) {
+    keys.push(`${k} = $${i++}`)
+    values.push(v)
+  }
+  values.push(id)
+  const res = await client.query(
+    `UPDATE api_sources SET ${keys.join(', ')}, updated_at = now()
+     WHERE id = $${i} RETURNING *`,
+    values
+  )
+  return res.rows[0]
+}

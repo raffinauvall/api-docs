@@ -6,8 +6,8 @@ import * as apis from '../repos/apis.js'
 import * as versions from '../repos/versions.js'
 import * as sources from '../repos/sources.js'
 import * as groups from '../repos/groups.js'
-import { syncApiSource } from '../services/sync.js'
 import { getProvider } from '../services/git-provider.js'
+import { loadOpenApiSnapshot, saveOpenApiSnapshot, syncApiSource } from '../services/sync.js'
 
 export const apisRouter = Router()
 apisRouter.use(requireAuth)
@@ -44,6 +44,15 @@ apisRouter.get(
     if (!api) return notFound(res, 'API tidak ditemukan')
     const source = await sources.getSourceByApi(req.params.id)
     res.json({ source: source || null })
+  })
+)
+
+apisRouter.get(
+  '/:id/branches',
+  asyncHandler(async (req, res) => {
+    const source = await sources.getSourceByApi(req.params.id)
+    if (!source) return notFound(res, 'Source tidak ditemukan')
+    res.json({ branches: await getProvider(source.provider).listBranches(source.repository) })
   })
 )
 
@@ -116,13 +125,21 @@ apisRouter.post(
 
     const slug = String(name).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 
-    // Buat API + source dalam transaksi (atomic)
+    let snapshot
+    try {
+      snapshot = await loadOpenApiSnapshot({ provider, repository, branch, file_path: filePath })
+    } catch (err) {
+      return res.status(err.status || 400).json({ error: err.message })
+    }
+
+    // Buat API + source + snapshot dalam transaksi (atomic).
     const result = await withTransaction(async (client) => {
       const api = await apis.createApi(client, {
         groupId,
         name,
         slug,
         description,
+        baseUrl: snapshot.meta.baseUrl,
         createdBy: req.session.user.id
       })
       const source = await sources.createSource(client, {
@@ -132,21 +149,26 @@ apisRouter.post(
         branch,
         filePath
       })
-      return { api, source }
+      const sync = await saveOpenApiSnapshot(client, source, snapshot)
+      const syncedSource = await sources.updateSourceForClient(client, source.id, {
+        last_synced_at: new Date(),
+        last_commit_sha: snapshot.commitSha,
+        last_sync_status: 'SYNCED',
+        last_sync_error: null
+      })
+      return { api, source: syncedSource, sync }
     })
-
-    // Initial sync (setelah registrasi) — jika gagal, API tetap ada tapi status FAILED.
-    let syncResult = null
-    try {
-      syncResult = await syncApiSource(result.source.id, { force: true })
-    } catch (err) {
-      syncResult = { error: err.message }
-    }
 
     res.status(201).json({
       api: result.api,
       source: result.source,
-      sync: syncResult
+      sync: {
+        skipped: false,
+        commitSha: snapshot.commitSha,
+        checksum: snapshot.checksum,
+        version: result.sync.version,
+        endpointCount: result.sync.endpoints.length
+      }
     })
   })
 )

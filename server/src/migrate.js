@@ -40,3 +40,12 @@ export async function migrate() {
     }
   }
 }
+
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  migrate()
+    .then(() => pool.end())
+    .catch((err) => {
+      console.error(err)
+      pool.end().finally(() => process.exit(1))
+    })
+}

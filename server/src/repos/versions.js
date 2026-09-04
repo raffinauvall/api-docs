@@ -111,5 +111,14 @@ export async function listEndpointsByVersion(versionId) {
 }
 
 export async function getEndpointById(id) {
-  return (await query('SELECT * FROM endpoints WHERE id = $1', [id])).rows[0]
+  return (
+    await query(
+      `SELECT e.*, v.api_id, a.name AS api_name, a.base_url AS api_base_url
+       FROM endpoints e
+       JOIN api_versions v ON v.id = e.api_version_id
+       JOIN apis a ON a.id = v.api_id
+       WHERE e.id = $1`,
+      [id]
+    )
+  ).rows[0]
 }
