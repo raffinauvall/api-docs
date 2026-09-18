@@ -11,7 +11,7 @@ export default function SoftwareCatalog() {
   const catalog = groupApis(apis)
 
   return (
-    <main className="w-full p-6 pb-20 lg:p-8">
+    <main className="w-full p-5 pb-20 sm:p-6 lg:p-8">
       <div className="mb-8 border-b border-white/5 pb-6">
         <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-sky-400">Software Catalog</p>
         <h1 className="text-3xl font-extrabold tracking-tight text-white lg:text-4xl">Apps, APIs, Services</h1>
@@ -19,11 +19,11 @@ export default function SoftwareCatalog() {
       </div>
 
       {isLoading ? (
-        <div className="rounded-lg border border-white/10 bg-slate-900/30 p-8 text-sm text-slate-500">Loading catalog...</div>
+        <div className="rounded-xl border border-white/10 bg-[#101219] p-8 text-sm text-slate-500">Loading catalog...</div>
       ) : catalog.length ? (
         <div className="grid gap-4 xl:grid-cols-2">
           {catalog.map((item) => (
-            <Link key={item.id} to={`/apis/${item.id}`} className="rounded-lg border border-white/10 bg-slate-900/30 p-5 transition hover:border-sky-500/30 hover:bg-slate-900/50">
+            <Link key={item.id} to={`/apis/${item.id}`} className="rounded-xl border border-white/10 bg-[#101219] p-5 transition hover:border-sky-500/30 hover:bg-[#171923]">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-widest text-slate-500">API</p>
@@ -38,7 +38,7 @@ export default function SoftwareCatalog() {
           ))}
         </div>
       ) : (
-        <div className="rounded-lg border border-dashed border-white/10 bg-slate-900/20 p-12 text-center">
+        <div className="rounded-xl border border-dashed border-white/10 bg-[#101219] p-12 text-center">
           <h2 className="text-lg font-bold text-white">Catalog masih kosong</h2>
           <p className="mt-2 text-sm text-slate-500">Register API atau push OpenAPI via webhook untuk mulai isi catalog.</p>
         </div>
