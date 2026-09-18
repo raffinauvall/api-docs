@@ -25,15 +25,15 @@ function ApiRuntimeSettings({ currentApi }) {
   }
 
   return (
-    <section className="mb-8 overflow-hidden rounded-lg border border-white/10 bg-[#080d14]">
-      <div className="flex flex-col gap-3 border-b border-white/10 bg-slate-900/60 px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
+    <section className="mb-8 overflow-hidden rounded-xl border border-white/10 bg-[#101219]">
+      <div className="flex flex-col gap-3 border-b border-white/10 bg-[#171923] px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-sky-400">Runtime</p>
           <h2 className="mt-1 text-lg font-bold text-white">Base URL & Authentication</h2>
         </div>
         <div className="flex items-center gap-3">
           {savedAt && <span className="text-xs font-semibold text-emerald-400">Saved {savedAt.toLocaleTimeString()}</span>}
-          <button onClick={save} className="rounded-lg bg-sky-600 px-5 py-2 text-sm font-bold text-white hover:bg-sky-500">Save for all endpoints</button>
+          <button onClick={save} className="min-h-11 rounded-lg bg-sky-500 px-5 py-2 text-sm font-bold text-white hover:bg-sky-400">Save for all endpoints</button>
         </div>
       </div>
 
@@ -93,8 +93,8 @@ function SourceSettings({ currentApi, knownBranches = [], onChangeBranch, saving
   const branchOptions = Array.from(new Set([...branches, ...knownBranches, currentApi.branch].filter(Boolean)))
 
   return (
-    <section className="mb-8 overflow-hidden rounded-lg border border-sky-500/20 bg-[#080d14]">
-      <div className="flex flex-col gap-3 border-b border-white/10 bg-slate-900/60 px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
+    <section className="mb-8 overflow-hidden rounded-xl border border-sky-500/20 bg-[#101219]">
+      <div className="flex flex-col gap-3 border-b border-white/10 bg-[#171923] px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-sky-400">Source</p>
           <h2 className="mt-1 text-lg font-bold text-white">Git Branch & Active Docs</h2>
@@ -208,7 +208,7 @@ export default function ApiDetail() {
   }, {})
 
   return (
-    <main className="mx-auto w-full px-6 py-10 lg:px-8">
+    <main className="mx-auto w-full px-5 py-8 sm:px-6 lg:px-8 lg:py-10">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 border-b border-white/5 pb-6">
         <div>
           <Link to="/" className="inline-flex items-center text-sm font-semibold text-slate-400 hover:text-sky-400 mb-4 transition-colors">
@@ -229,7 +229,7 @@ export default function ApiDetail() {
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-4 rounded-xl border border-white/5 bg-slate-900/30 p-5 shadow-inner backdrop-blur-sm mb-8">
+      <div className="flex flex-wrap items-center gap-4 rounded-xl border border-white/10 bg-[#101219] p-5 mb-8">
         <span className="inline-flex items-center rounded-full bg-sky-500/10 px-3 py-1 text-xs font-bold text-sky-400 ring-1 ring-inset ring-sky-500/20">
           v{currentApi?.active_version || '-'}
         </span>
@@ -246,7 +246,7 @@ export default function ApiDetail() {
       {currentApi && <ApiRuntimeSettings key={currentApi.id} currentApi={currentApi} />}
 
       {endpointsLoading ? (
-        <div className="rounded-2xl border border-white/5 bg-slate-900/20 p-12 text-center text-sm font-medium text-slate-500">Loading endpoints...</div>
+        <div className="rounded-xl border border-white/10 bg-[#101219] p-12 text-center text-sm font-medium text-slate-500">Loading endpoints...</div>
       ) : (
         <div className="space-y-10">
           {Object.entries(grouped).map(([tag, eps]) => (
@@ -257,7 +257,7 @@ export default function ApiDetail() {
                   <Link
                     key={ep.id}
                     to={`/endpoints/${ep.id}`}
-                    className="group/ep flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5 rounded-xl border border-white/5 bg-slate-900/40 p-4 shadow-sm transition-all hover:border-white/10 hover:bg-slate-900/60"
+                    className="group/ep flex flex-col gap-4 rounded-xl border border-white/10 bg-[#101219] p-4 transition-all hover:border-sky-500/30 hover:bg-[#171923] sm:flex-row sm:items-center sm:gap-5"
                   >
                     <span
                       className={`inline-flex w-24 items-center justify-center rounded-md px-2.5 py-1.5 text-xs font-bold tracking-wide ring-1 ring-inset ${METHOD_COLORS[ep.method] || METHOD_COLORS.GET}`}

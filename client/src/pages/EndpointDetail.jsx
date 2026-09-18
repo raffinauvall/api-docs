@@ -48,18 +48,27 @@ function copyText(value) {
 }
 
 function JsonBlock({ title, data }) {
+  const [copied, setCopied] = useState(false)
   const text = JSON.stringify(data, null, 2)
+
+  async function copy() {
+    await copyText(text)
+    setCopied(true)
+    window.setTimeout(() => setCopied(false), 1400)
+  }
+
   return (
-    <div className="mb-8 overflow-hidden rounded-xl border border-white/10 bg-[#0B0F19] shadow-lg shadow-black/20">
-      <div className="border-b border-white/5 bg-slate-900/50 px-5 py-3 flex items-center justify-between">
+    <div className="mb-8 overflow-hidden rounded-xl border border-white/10 bg-[#101219]">
+      <div className="flex items-center justify-between border-b border-white/10 bg-[#171923] px-5 py-3">
         <h3 className="text-sm font-bold text-slate-300">{title}</h3>
-        <button onClick={() => copyText(text)} className="text-slate-500 hover:text-slate-300 transition-colors" title="Copy to clipboard">
+        <button onClick={copy} className="inline-flex min-h-11 items-center gap-2 rounded-lg px-2 text-xs font-semibold text-slate-400 hover:bg-white/5 hover:text-white" title="Copy to clipboard">
+          {copied ? 'Copied' : 'Copy'}
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
           </svg>
         </button>
       </div>
-      <div className="p-5 overflow-x-auto bg-[#05070a]/50">
+      <div className="overflow-x-auto bg-[#0C0E14] p-5">
         <pre className="text-sm font-mono text-sky-200/80 leading-relaxed">{text}</pre>
       </div>
     </div>
@@ -155,17 +164,17 @@ function TryIt({ endpoint }) {
   }
 
   return (
-    <section className="mb-10 overflow-hidden rounded-lg border border-white/10 bg-[#080d14] shadow-xl shadow-black/20">
-      <div className="flex flex-col gap-3 border-b border-white/10 bg-slate-900/60 px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
+    <section className="mb-10 overflow-hidden rounded-xl border border-white/10 bg-[#101219]">
+      <div className="flex flex-col gap-3 border-b border-white/10 bg-[#171923] px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-sky-400">Try it</p>
           <h2 className="mt-1 text-lg font-bold text-white">{endpoint.api_name || 'API'} request</h2>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {savedAt && <span className="text-xs font-semibold text-emerald-400">Saved {savedAt.toLocaleTimeString()}</span>}
-          <button onClick={() => copyText(curlCommand())} className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-bold text-slate-300 transition hover:bg-white/10">Copy cURL</button>
-          <button onClick={saveConfig} className="rounded-lg border border-sky-500/30 bg-sky-500/10 px-4 py-2 text-sm font-bold text-sky-300 transition hover:bg-sky-500/20">Save config</button>
-          <button onClick={send} disabled={sending || !baseUrl} className="rounded-lg bg-sky-600 px-5 py-2 text-sm font-bold text-white transition hover:bg-sky-500 disabled:cursor-not-allowed disabled:opacity-40">
+          <button onClick={() => copyText(curlCommand())} className="min-h-11 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-bold text-slate-300 transition hover:bg-white/10">Copy cURL</button>
+          <button onClick={saveConfig} className="min-h-11 rounded-lg border border-sky-500/30 bg-sky-500/10 px-4 py-2 text-sm font-bold text-sky-300 transition hover:bg-sky-500/20">Save config</button>
+          <button onClick={send} disabled={sending || !baseUrl} className="min-h-11 rounded-lg bg-sky-500 px-5 py-2 text-sm font-bold text-white transition hover:bg-sky-400 disabled:cursor-not-allowed disabled:opacity-40">
             {sending ? 'Sending...' : 'Send'}
           </button>
         </div>
@@ -283,7 +292,7 @@ export default function EndpointDetail() {
   const hasMainContent = Boolean(ep.description || ep.parameters?.length)
 
   return (
-    <main className="mx-auto w-full px-6 py-10 lg:px-8">
+    <main className="mx-auto w-full px-5 py-8 sm:px-6 lg:px-8 lg:py-10">
       <div className="mb-10 pb-6 border-b border-white/5">
         <button onClick={() => navigate(-1)} className="inline-flex items-center text-sm font-semibold text-slate-400 hover:text-sky-400 mb-6 transition-colors">
           <svg className="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
@@ -307,7 +316,7 @@ export default function EndpointDetail() {
           {ep.description && (
             <section>
               <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-slate-500">Description</h3>
-              <div className="rounded-xl border border-white/5 bg-slate-900/30 p-6 shadow-sm backdrop-blur-sm">
+              <div className="rounded-xl border border-white/10 bg-[#101219] p-6">
                 <p className="text-slate-300 leading-relaxed">{ep.description}</p>
               </div>
             </section>
@@ -316,7 +325,7 @@ export default function EndpointDetail() {
           {ep.parameters?.length > 0 && (
             <section>
               <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-slate-500">Parameters</h3>
-              <div className="rounded-xl border border-white/5 bg-slate-900/30 shadow-sm backdrop-blur-sm overflow-hidden">
+              <div className="overflow-hidden rounded-xl border border-white/10 bg-[#101219]">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-sm text-slate-300">
                     <thead className="bg-[#0B0F19]/80 text-slate-400">
