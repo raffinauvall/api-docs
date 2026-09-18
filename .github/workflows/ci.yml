@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, development]
 
 jobs:
   check:
@@ -24,6 +24,7 @@ jobs:
       - run: npm ci
       - run: npm ci --prefix client
       - run: npm ci --prefix server
+      - run: npm run lint
       - run: npm test
       - run: npm run build
 

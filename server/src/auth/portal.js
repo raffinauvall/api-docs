@@ -17,14 +17,6 @@ function getString(source, keys) {
   return ''
 }
 
-function mapPortalMessage(message = '') {
-  const text = String(message || '').trim() || 'NIK atau Password salah'
-  const lower = text.toLowerCase()
-  if (lower.includes('password')) return 'PASSWORD SALAH'
-  if (lower.includes('not found')) return 'NIK TIDAK TERDAFTAR'
-  return text.toUpperCase()
-}
-
 function portalError(message, status) {
   const err = new Error(message)
   err.status = status

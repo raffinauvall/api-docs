@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { requireAuth } from '../auth/middleware.js'
-import { asyncHandler, notFound, badRequest } from '../middleware/error.js'
+import { asyncHandler, notFound } from '../middleware/error.js'
 import * as versions from '../repos/versions.js'
 
 export const versionsRouter = Router()

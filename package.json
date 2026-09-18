@@ -9,11 +9,14 @@
     "dev:client": "npm run dev --prefix client",
     "db:init": "npm run db:init --prefix server",
     "db:migrate": "npm run db:migrate --prefix server",
+    "lint": "eslint client/src server/src",
     "test": "node --test server/src/auth/portal.test.js",
     "build": "npm run build --prefix client",
     "start": "npm run start --prefix server"
   },
   "devDependencies": {
-    "concurrently": "^9.1.0"
+    "concurrently": "^9.1.0",
+    "eslint": "^9.39.5",
+    "eslint-plugin-react": "^7.37.5"
   }
 }
