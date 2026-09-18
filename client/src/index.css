@@ -3,18 +3,20 @@
 @tailwind utilities;
 
 :root {
-  --bg: #f5f7fb;
-  --card: #ffffff;
-  --border: #d8e0ea;
-  --soft-border: #edf1f6;
-  --text: #172033;
-  --muted: #64748b;
-  --accent: #1f6feb;
-  --accent-strong: #1558c9;
-  --ok: #16865a;
-  --warn: #b7791f;
-  --err: #c2413c;
-  --shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
+  --bg: #08090d;
+  --card: #101219;
+  --raised: #171923;
+  --input: #0c0e14;
+  --border: #252936;
+  --soft-border: #1c1f29;
+  --text: #f4f5f7;
+  --muted: #a5a9b5;
+  --accent: #9b7bff;
+  --accent-strong: #b2a0ff;
+  --ok: #48d597;
+  --warn: #f2b76b;
+  --err: #f27b8a;
+  --shadow: 0 14px 40px rgba(0, 0, 0, 0.22);
 }
 
 * { box-sizing: border-box; }
@@ -23,11 +25,16 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.5;
 }
-a { color: var(--accent); text-decoration: none; }
+a { color: var(--accent-strong); text-decoration: none; }
 a:hover { color: var(--accent-strong); }
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 
 .container { max-width: 1180px; margin: 0 auto; padding: 28px 24px; }
 .container.narrow { max-width: 640px; }
@@ -35,7 +42,7 @@ a:hover { color: var(--accent-strong); }
 .app { min-height: 100vh; }
 
 .topbar {
-  background: #101828;
+  background: var(--bg);
   border-bottom: 1px solid rgba(255,255,255,0.08);
   color: #fff;
   padding: 0;
@@ -251,11 +258,12 @@ input, select, textarea {
   padding: 9px 12px;
   font-size: 0.95rem;
   font-family: inherit;
-  background: #fff;
+  background: var(--input);
+  color: var(--text);
 }
 input:focus, select:focus, textarea:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.14);
+  box-shadow: 0 0 0 3px rgba(155, 123, 255, 0.14);
   outline: 0;
 }
 
@@ -278,8 +286,9 @@ input:focus, select:focus, textarea:focus {
 .auth-card label { margin-top: 8px; font-size: 0.85rem; font-weight: 500; }
 
 .error {
-  background: #fee2e2;
-  color: #b91c1c;
+  background: rgba(242, 123, 138, 0.1);
+  border: 1px solid rgba(242, 123, 138, 0.24);
+  color: #ffabb6;
   border-radius: 8px;
   padding: 10px 12px;
   font-size: 0.9rem;
@@ -290,8 +299,8 @@ input:focus, select:focus, textarea:focus {
 .section h3 { margin: 0 0 10px; }
 .json-block h3 { margin: 0 0 8px; }
 .json-block pre {
-  background: #0b1220;
-  color: #e2e8f0;
+  background: var(--input);
+  color: #e5e7eb;
   border-radius: 8px;
   padding: 14px;
   overflow-x: auto;
@@ -313,6 +322,15 @@ th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--bor
 th { color: var(--muted); font-weight: 600; }
 
 .page-loading { display: flex; align-items: center; justify-content: center; min-height: 100vh; color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
 
 @media (max-width: 760px) {
   .container { padding: 20px 16px; }

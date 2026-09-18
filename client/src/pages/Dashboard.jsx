@@ -66,7 +66,7 @@ export default function Dashboard() {
   ]
 
   return (
-    <div className="w-full p-6 lg:p-8 pb-20">
+    <div className="w-full p-5 pb-20 sm:p-6 lg:p-8">
       {
         <>
           <div className="mb-6">
@@ -79,29 +79,30 @@ export default function Dashboard() {
             </p>
           </div>
 
-          <div className="mb-8 grid gap-4 lg:grid-cols-3">
-            {portalAreas.map((area) => (
-              <div key={area.title} className="rounded-lg border border-sky-500/30 bg-sky-500/10 p-5 text-slate-200">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-widest text-slate-500">Portal Area</p>
-                    <h2 className="mt-2 text-lg font-extrabold text-white">{area.title}</h2>
+          <div className="mb-8 overflow-hidden rounded-xl border border-white/10 bg-[#101219]">
+            <div className="border-b border-white/10 px-5 py-4">
+              <p className="text-xs font-bold uppercase tracking-widest text-slate-500">Workspace</p>
+              <h2 className="mt-1 text-lg font-extrabold text-white">Find the right place to work</h2>
+            </div>
+            <div className="grid divide-y divide-white/10 md:grid-cols-3 md:divide-x md:divide-y-0">
+              {portalAreas.map((area) => (
+                <Link key={area.title} to={area.to} className="group flex min-h-28 items-center justify-between gap-4 px-5 py-4 transition-colors hover:bg-sky-500/5">
+                  <div className="min-w-0">
+                    <h3 className="font-bold text-white group-hover:text-sky-300">{area.title}</h3>
+                    <p className="mt-1 text-sm text-slate-500">{area.body}</p>
                   </div>
-                  <span className="rounded-full bg-white/5 px-3 py-1 text-xs font-bold">{area.count}</span>
-                </div>
-                <p className="mt-4 text-sm">{area.body}</p>
-                <Link to={area.to} className="mt-5 inline-flex h-9 items-center rounded-lg bg-sky-600 px-4 text-sm font-bold text-white hover:bg-sky-500">Open</Link>
-              </div>
-            ))}
+                  <span className="shrink-0 text-xs font-bold text-slate-500">{area.count}</span>
+                </Link>
+              ))}
+            </div>
           </div>
 
           <div className="mb-8 grid gap-4 sm:grid-cols-3">
             {/* KPI Card 1 */}
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/40 p-6 shadow-lg backdrop-blur-sm transition-all hover:bg-slate-900/60">
-              <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-sky-500/10 blur-2xl"></div>
+            <div className="rounded-xl border border-white/10 bg-[#101219] p-5 transition-colors hover:border-white/20">
               <div className="flex items-center justify-between">
                 <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Registered APIs</p>
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-500/10 text-sky-400 ring-1 ring-inset ring-sky-500/20">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-sky-500/10 text-sky-400 ring-1 ring-inset ring-sky-500/20">
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                   </svg>
@@ -111,11 +112,10 @@ export default function Dashboard() {
             </div>
 
             {/* KPI Card 2 */}
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/40 p-6 shadow-lg backdrop-blur-sm transition-all hover:bg-slate-900/60">
-              <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-indigo-500/10 blur-2xl"></div>
+            <div className="rounded-xl border border-white/10 bg-[#101219] p-5 transition-colors hover:border-white/20">
               <div className="flex items-center justify-between">
                 <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Endpoints</p>
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-400 ring-1 ring-inset ring-indigo-500/20">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-300 ring-1 ring-inset ring-indigo-500/20">
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
@@ -125,11 +125,10 @@ export default function Dashboard() {
             </div>
 
             {/* KPI Card 3 */}
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/40 p-6 shadow-lg backdrop-blur-sm transition-all hover:bg-slate-900/60">
-              <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-emerald-500/10 blur-2xl"></div>
+            <div className="rounded-xl border border-white/10 bg-[#101219] p-5 transition-colors hover:border-white/20">
               <div className="flex items-center justify-between">
                 <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Successfully Synced</p>
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 ring-1 ring-inset ring-emerald-500/20">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 ring-1 ring-inset ring-emerald-500/20">
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -145,7 +144,7 @@ export default function Dashboard() {
         <h2 className="text-lg font-bold text-slate-200">
           All APIs
         </h2>
-        <Link className="inline-flex min-h-10 items-center justify-center rounded-lg bg-sky-600 px-5 text-sm font-semibold text-white shadow-lg shadow-sky-600/20 transition-all hover:bg-sky-500" to="/register">
+        <Link className="inline-flex min-h-11 items-center justify-center rounded-lg bg-sky-500 px-5 text-sm font-semibold text-white shadow-lg shadow-sky-500/15 transition-all hover:bg-sky-400" to="/register">
           <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
           </svg>
@@ -154,7 +153,7 @@ export default function Dashboard() {
       </div>
 
       {stats.failed.length > 0 && (
-        <section className="mb-8 rounded-xl border border-rose-500/20 bg-rose-500/5 p-5 backdrop-blur-md">
+        <section className="mb-8 rounded-xl border border-rose-500/20 bg-rose-500/5 p-5">
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             <div>
               <h3 className="text-sm font-bold text-rose-400">{stats.failed.length} Sync Failures Detected</h3>
@@ -162,7 +161,7 @@ export default function Dashboard() {
             </div>
             <div className="flex flex-wrap gap-2">
               {stats.failed.slice(0, 3).map((item) => (
-                <Link key={item.id} to={`/apis/${item.id}`} className="rounded-full bg-rose-500/10 px-3 py-1 text-xs font-semibold text-rose-400 ring-1 ring-inset ring-rose-500/20 hover:bg-rose-500/20 transition-colors">
+                  <Link key={item.id} to={`/apis/${item.id}`} className="min-h-11 rounded-lg bg-rose-500/10 px-3 py-2 text-xs font-semibold text-rose-400 ring-1 ring-inset ring-rose-500/20 hover:bg-rose-500/20 transition-colors">
                   {item.name}
                 </Link>
               ))}
@@ -172,16 +171,16 @@ export default function Dashboard() {
       )}
 
       {loading ? (
-        <div className="rounded-2xl border border-white/5 bg-slate-900/20 p-12 text-center text-sm font-medium text-slate-500">Loading data...</div>
+        <div className="rounded-xl border border-white/10 bg-[#101219] p-12 text-center text-sm font-medium text-slate-500">Loading data...</div>
       ) : catalog.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-white/10 bg-slate-900/20 p-12 text-center">
+        <div className="rounded-xl border border-dashed border-white/10 bg-[#101219] p-12 text-center">
           <h3 className="text-lg font-bold text-white">No APIs Found</h3>
           <p className="mt-2 text-sm text-slate-400">There are no APIs in this view. Try registering one.</p>
         </div>
       ) : (
         <div className="grid gap-5 xl:grid-cols-2">
           {catalog.map((item) => (
-            <article key={item.id} className="group/card relative rounded-xl border border-white/10 bg-slate-900/40 p-5 shadow-lg backdrop-blur-sm transition-all hover:border-sky-500/30 hover:bg-slate-900/60">
+            <article key={item.id} className="group/card relative rounded-xl border border-white/10 bg-[#101219] p-5 transition-all hover:border-sky-500/30 hover:bg-[#171923]">
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 mb-1">

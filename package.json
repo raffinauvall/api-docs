@@ -9,6 +9,7 @@
     "dev:client": "npm run dev --prefix client",
     "db:init": "npm run db:init --prefix server",
     "db:migrate": "npm run db:migrate --prefix server",
+    "test": "node --test server/src/auth/portal.test.js",
     "build": "npm run build --prefix client",
     "start": "npm run start --prefix server"
   },

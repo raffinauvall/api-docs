@@ -40,25 +40,20 @@ export default function Login() {
   }
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#07111f] px-6 py-12 selection:bg-cyan-400/30">
-      <div className="pointer-events-none absolute -left-32 -top-32 h-96 w-96 rounded-full bg-cyan-400/15 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-40 -right-24 h-[28rem] w-[28rem] rounded-full bg-blue-600/20 blur-3xl" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(56,189,248,0.10),transparent_42%)]" />
-
+    <div className="flex min-h-screen items-center justify-center bg-[#08090D] px-6 py-12 selection:bg-sky-500/30">
       <div className="relative z-10 w-full max-w-[430px]">
         <form
-          className="rounded-[28px] border border-white/10 bg-slate-950/75 p-7 shadow-2xl shadow-black/30 backdrop-blur-2xl sm:p-9"
+          className="rounded-xl border border-white/10 bg-[#101219] p-7 shadow-2xl shadow-black/30 sm:p-9"
           onSubmit={submit}
         >
           <div className="mb-9">
-            <div className="mb-6 flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-300 to-blue-600 text-xl font-black text-slate-950 shadow-lg shadow-cyan-500/20">
-                H
-              </div>
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.22em] text-cyan-300">SMG Developer Platform</p>
-                <p className="mt-1 text-xs text-slate-500">Internal API documentation</p>
-              </div>
+            <div className="mb-7">
+              <img
+                src="/logo-serba-mulia.png"
+                alt="Serba Mulia"
+                className="h-10 w-auto object-contain"
+              />
+              <p className="mt-3 text-xs font-semibold tracking-wide text-slate-500">Developer Platform · Internal API Documentation</p>
             </div>
             <h1 className="text-4xl font-black tracking-tight text-white">Hub SMG</h1>
             <p className="mt-3 max-w-sm text-sm leading-6 text-slate-400">
@@ -70,7 +65,7 @@ export default function Login() {
             <div>
               <label className="mb-2 block text-sm font-semibold text-slate-200">NIK Portal</label>
               <input
-                className="block w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3.5 text-sm text-white outline-none transition-all placeholder:text-slate-600 focus:border-cyan-400/70 focus:bg-white/[0.07] focus:ring-4 focus:ring-cyan-400/10"
+                className="block min-h-11 w-full rounded-lg border border-white/10 bg-[#0C0E14] px-4 py-3.5 text-sm text-white outline-none transition-all placeholder:text-slate-600 focus:border-sky-400 focus:bg-[#171923] focus:ring-4 focus:ring-sky-400/10"
                 value={nik}
                 onChange={(e) => setNik(e.target.value)}
                 placeholder="Masukkan NIK"
@@ -83,7 +78,7 @@ export default function Login() {
               <label className="mb-2 block text-sm font-semibold text-slate-200">Password Portal</label>
               <input
                 type="password"
-                className="block w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3.5 text-sm text-white outline-none transition-all placeholder:text-slate-600 focus:border-cyan-400/70 focus:bg-white/[0.07] focus:ring-4 focus:ring-cyan-400/10"
+                className="block min-h-11 w-full rounded-lg border border-white/10 bg-[#0C0E14] px-4 py-3.5 text-sm text-white outline-none transition-all placeholder:text-slate-600 focus:border-sky-400 focus:bg-[#171923] focus:ring-4 focus:ring-sky-400/10"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Masukkan password Portal"
@@ -101,7 +96,7 @@ export default function Login() {
 
           <div className="mt-8">
             <button
-              className="flex w-full items-center justify-center rounded-2xl bg-gradient-to-r from-cyan-400 to-blue-500 px-4 py-3.5 text-sm font-extrabold text-slate-950 shadow-lg shadow-cyan-500/20 transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex min-h-11 w-full items-center justify-center rounded-lg bg-sky-500 px-4 py-3.5 text-sm font-extrabold text-white shadow-lg shadow-sky-500/15 transition-all hover:bg-sky-400 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={busy}
             >
               {busy ? 'Memverifikasi...' : 'Masuk ke Hub SMG'}
@@ -116,7 +111,7 @@ export default function Login() {
                 </div>
                 <button
                   type="button"
-                  className="flex w-full items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-bold text-slate-300 transition-all hover:bg-white/[0.08] hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex min-h-11 w-full items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-bold text-slate-300 transition-all hover:bg-white/[0.08] hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
                   onClick={handleDevLogin}
                   disabled={busy}
                 >

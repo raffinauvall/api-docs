@@ -45,25 +45,24 @@ export default function RegisterApi() {
   }
 
   return (
-    <main className="mx-auto max-w-3xl px-6 py-12">
+    <main className="mx-auto w-full max-w-3xl px-5 py-8 sm:px-6 lg:py-10">
       <div className="mb-10 text-center">
         <Link to="/" className="inline-flex items-center text-sm font-semibold text-slate-500 hover:text-sky-400 mb-6 transition-colors">
           <svg className="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
           Back to Dashboard
         </Link>
-        <h1 className="text-4xl font-extrabold tracking-tight text-white">Register New API</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Register New API</h1>
         <p className="mt-3 text-sm text-slate-400">Connect your OpenAPI specification from Git to sync endpoints.</p>
       </div>
 
-      <form className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/50 p-6 shadow-2xl backdrop-blur-xl sm:p-10" onSubmit={submit}>
-        <div className="absolute inset-0 bg-gradient-to-br from-sky-500/5 via-transparent to-transparent pointer-events-none"></div>
+      <form className="relative overflow-hidden rounded-xl border border-white/10 bg-[#101219] p-5 sm:p-8" onSubmit={submit}>
         <div className="relative space-y-6">
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
               <label className="mb-2 block text-sm font-semibold text-slate-300">API Name</label>
               <input
-                className="block w-full rounded-xl border border-white/10 bg-[#05070a] px-4 py-3 text-sm text-white outline-none transition-all focus:border-sky-500 focus:bg-[#0B0F19] focus:ring-4 focus:ring-sky-500/10 placeholder-slate-600"
+                className="block min-h-11 w-full rounded-lg border border-white/10 bg-[#0C0E14] px-4 py-3 text-sm text-white outline-none transition-all focus:border-sky-500 focus:bg-[#171923] focus:ring-4 focus:ring-sky-500/10 placeholder-slate-600"
                 value={form.name}
                 onChange={set('name')}
                 placeholder="e.g., Payment Gateway"
@@ -74,7 +73,7 @@ export default function RegisterApi() {
             <div className="md:col-span-2">
               <label className="mb-2 block text-sm font-semibold text-slate-300">Description <span className="text-slate-500 font-normal">(Optional)</span></label>
               <textarea
-                className="block w-full rounded-xl border border-white/10 bg-[#05070a] px-4 py-3 text-sm text-white outline-none transition-all focus:border-sky-500 focus:bg-[#0B0F19] focus:ring-4 focus:ring-sky-500/10 placeholder-slate-600 resize-y"
+                className="block min-h-11 w-full rounded-lg border border-white/10 bg-[#0C0E14] px-4 py-3 text-sm text-white outline-none transition-all focus:border-sky-500 focus:bg-[#171923] focus:ring-4 focus:ring-sky-500/10 placeholder-slate-600 resize-y"
                 value={form.description}
                 onChange={set('description')}
                 placeholder="Brief description of this API service..."
@@ -86,7 +85,7 @@ export default function RegisterApi() {
               <label className="mb-2 block text-sm font-semibold text-slate-300">API Group</label>
               <div className="relative">
                 <select
-                  className="block w-full appearance-none rounded-xl border border-white/10 bg-[#05070a] px-4 py-3 pr-10 text-sm text-white outline-none transition-all focus:border-sky-500 focus:bg-[#0B0F19] focus:ring-4 focus:ring-sky-500/10"
+                  className="block min-h-11 w-full appearance-none rounded-lg border border-white/10 bg-[#0C0E14] px-4 py-3 pr-10 text-sm text-white outline-none transition-all focus:border-sky-500 focus:bg-[#171923] focus:ring-4 focus:ring-sky-500/10"
                   value={form.group_id}
                   onChange={set('group_id')}
                   required
@@ -121,7 +120,7 @@ export default function RegisterApi() {
             <div className="col-span-1">
               <label className="mb-2 block text-sm font-semibold text-slate-300">Branch</label>
               <input
-                className="block w-full rounded-xl border border-white/10 bg-[#05070a] px-4 py-3 text-sm text-white outline-none transition-all focus:border-sky-500 focus:bg-[#0B0F19] focus:ring-4 focus:ring-sky-500/10 placeholder-slate-600"
+                className="block min-h-11 w-full rounded-lg border border-white/10 bg-[#0C0E14] px-4 py-3 text-sm text-white outline-none transition-all focus:border-sky-500 focus:bg-[#171923] focus:ring-4 focus:ring-sky-500/10 placeholder-slate-600"
                 value={form.branch}
                 onChange={set('branch')}
                 placeholder="main"
@@ -131,7 +130,7 @@ export default function RegisterApi() {
             <div className="md:col-span-2">
               <label className="mb-2 block text-sm font-semibold text-slate-300">Repository</label>
               <input
-                className="block w-full rounded-xl border border-white/10 bg-[#05070a] px-4 py-3 text-sm text-sky-200 outline-none transition-all focus:border-sky-500 focus:bg-[#0B0F19] focus:ring-4 focus:ring-sky-500/10 placeholder-slate-600 font-mono"
+                className="block min-h-11 w-full rounded-lg border border-white/10 bg-[#0C0E14] px-4 py-3 text-sm text-sky-200 outline-none transition-all focus:border-sky-500 focus:bg-[#171923] focus:ring-4 focus:ring-sky-500/10 placeholder-slate-600 font-mono"
                 value={form.repository}
                 onChange={set('repository')}
                 placeholder="company/payment-service"
@@ -142,7 +141,7 @@ export default function RegisterApi() {
             <div className="md:col-span-2">
               <label className="mb-2 block text-sm font-semibold text-slate-300">OpenAPI File Path</label>
               <input
-                className="block w-full rounded-xl border border-white/10 bg-[#05070a] px-4 py-3 text-sm text-sky-200 outline-none transition-all focus:border-sky-500 focus:bg-[#0B0F19] focus:ring-4 focus:ring-sky-500/10 placeholder-slate-600 font-mono"
+                className="block min-h-11 w-full rounded-lg border border-white/10 bg-[#0C0E14] px-4 py-3 text-sm text-sky-200 outline-none transition-all focus:border-sky-500 focus:bg-[#171923] focus:ring-4 focus:ring-sky-500/10 placeholder-slate-600 font-mono"
                 value={form.file_path}
                 onChange={set('file_path')}
                 placeholder="docs/openapi.yml"
@@ -152,13 +151,13 @@ export default function RegisterApi() {
           </div>
 
           {error && (
-            <div className="mt-6 rounded-xl border border-rose-500/20 bg-rose-500/10 p-4 text-sm font-medium text-rose-400 backdrop-blur-md">
+            <div className="mt-6 rounded-lg border border-rose-500/20 bg-rose-500/10 p-4 text-sm font-medium text-rose-400">
               {error}
             </div>
           )}
           
           {syncInfo?.error && (
-            <div className="mt-6 rounded-xl border border-rose-500/20 bg-rose-500/10 p-4 text-sm font-medium text-rose-400 backdrop-blur-md">
+            <div className="mt-6 rounded-lg border border-rose-500/20 bg-rose-500/10 p-4 text-sm font-medium text-rose-400">
               <strong className="block mb-1 text-rose-300">API Registered, but initial sync failed:</strong>
               {syncInfo.error}
             </div>
@@ -166,7 +165,7 @@ export default function RegisterApi() {
 
           <div className="mt-8 pt-8 border-t border-white/5">
             <button
-              className="flex w-full items-center justify-center rounded-xl bg-sky-600 px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-600/20 transition-all hover:bg-sky-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex min-h-11 w-full items-center justify-center rounded-lg bg-sky-500 px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-sky-500/15 transition-all hover:bg-sky-400 disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={register.isPending}
             >
               {register.isPending ? 'Authenticating and Syncing...' : 'Register and Sync Repository'}
