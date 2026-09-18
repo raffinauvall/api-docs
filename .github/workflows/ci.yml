@@ -58,5 +58,5 @@ jobs:
           npm ci --prefix client
           npm ci --prefix server
           npm run build
-          sudo systemctl restart api-docs
+          pm2 restart api-docs
           REMOTE
