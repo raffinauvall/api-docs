@@ -10,13 +10,9 @@ async function request(path, options = {}) {
     ...options
   })
 
-  if (res.status === 401) {
-    throw Object.assign(new Error('Belum login'), { status: 401 })
-  }
-
   const data = await res.json().catch(() => ({}))
   if (!res.ok) {
-    throw Object.assign(new Error(data.error || 'Terjadi kesalahan'), {
+    throw Object.assign(new Error(data.error || (res.status === 401 ? 'Belum login' : 'Terjadi kesalahan')), {
       status: res.status,
       data
     })
