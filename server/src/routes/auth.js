@@ -16,16 +16,16 @@ authRouter.post('/logout', (req, res) => {
   req.session.destroy(() => res.json({ ok: true }))
 })
 
-// POST /api/auth/login — SSO ke Portal SMG (pola chatbot-analyzer)
+// POST /api/auth/login — SSO ke Portal SMG production API
 authRouter.post('/login', async (req, res) => {
   try {
-    const { email, nik: bodyNik, password, businessUnit } = req.body || {}
+    const { email, nik: bodyNik, password } = req.body || {}
     if (!(email || bodyNik) || !password) {
       return res.status(400).json({ error: 'NIK dan password wajib diisi' })
     }
 
     const nik = String(bodyNik || email).trim()
-    const portalUser = await loginPortal(nik, password, businessUnit)
+    const portalUser = await loginPortal(nik, password)
     if (portalUser.token) req.session.portalToken = portalUser.token
     const userNik = portalUser.nik || nik
 
@@ -35,7 +35,7 @@ authRouter.post('/login', async (req, res) => {
       name: portalUser.name,
       avatar: portalUser.avatar || null,
       nik: userNik,
-      role: portalUser.role,
+      role: portalUser.role || null,
       bu: portalUser.bu || null
     })
 

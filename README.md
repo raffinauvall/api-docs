@@ -154,18 +154,13 @@ Dibaca dari `server/.env` (lihat `server/src/config.js`).
 | `SESSION_SECRET` | (dev fallback) | Secret session, **wajib** random ≥32 char di produksi |
 | `SESSION_NAME` | `api_docs_sid` | Nama cookie session |
 | `COOKIE_SECURE` | `false` | Set `true` hanya di production HTTPS |
-| `PORTAL_AUTH_URL` | — | URL login Portal SMG |
-| `PORTAL_BASIC_USERNAME` | — | Username Basic Auth portal |
-| `PORTAL_BASIC_PASSWORD` | — | Password Basic Auth portal |
-| `CORP_ID` | — | Corporate ID (fallback ke `PORTAL_CORP`) |
-| `APP_KEY` | — | App key portal |
-| `PORTAL_BUSINESS_UNIT_FIELD` | `business_unit` | Nama field business unit |
-| `DEFAULT_BUSINESS_UNIT` | — | Business unit default |
+| `PORTAL_HOST` | — | Base URL Portal API SMG, mis. `https://api.serbamuliagroup.co.id/v1/` |
+| `PORTAL_CORP` | — | Corporate ID Portal, mis. `SM-IFL01` |
 | `GITHUB_TOKEN` | — | GitHub PAT (opsional, untuk repo private) |
 | `GITHUB_WEBHOOK_SECRET` | — | Secret untuk verifikasi webhook signature |
 | `DEV_AUTH` | `true` | Aktifkan `POST /api/auth/dev-login` (hanya non-production) |
 
-> Config Portal memakai `PORTAL_AUTH_URL`, `PORTAL_BASIC_USERNAME`, `PORTAL_BASIC_PASSWORD`, `CORP_ID`, dan `APP_KEY`. Jika belum di-set, login Portal akan gagal dengan error `PORTAL_CONFIG`.
+> Login Portal memakai `POST {PORTAL_HOST}/auth/login` dengan header `X-API-Corp`, `Accept-Language: id`, dan body `{ username, password, device: "Web" }`. Jika `PORTAL_HOST` atau `PORTAL_CORP` belum di-set, login akan gagal dengan error `PORTAL_CONFIG`.
 
 ## Database Schema
 
@@ -251,7 +246,7 @@ Semua route kecuali auth/webhook diproteksi `requireAuth`.
 ```text
 POST /api/auth/login { nik, password }
         ↓
-POST {PORTAL_AUTH_URL} (Basic Auth + corp_id + app_key)
+POST {PORTAL_HOST}/auth/login (X-API-Corp + username/password/device)
         ↓
 Portal → profile + token
         ↓

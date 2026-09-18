@@ -1,11 +1,8 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 
-process.env.PORTAL_AUTH_URL = 'https://portal.test/auth/login'
-process.env.PORTAL_BASIC_USERNAME = 'user'
-process.env.PORTAL_BASIC_PASSWORD = 'pass'
-process.env.CORP_ID = 'corp'
-process.env.APP_KEY = 'app'
+process.env.PORTAL_HOST = 'https://portal.test/v1/'
+process.env.PORTAL_CORP = 'corp'
 
 const { loginPortal } = await import('./portal.js')
 
@@ -16,39 +13,37 @@ function response(body, ok = true) {
   }
 }
 
-test('loginPortal auto-resolves multiple-nik with first BU', async () => {
+test('loginPortal uses the production Portal contract', async () => {
   const calls = []
-  const fetchImpl = async (_url, options) => {
+  const fetchImpl = async (url, options) => {
+    calls.push({ url, options })
     const body = JSON.parse(options.body)
-    calls.push(body)
-
-    if (calls.length === 1) {
-      return response({
-        status: 'failed',
-        reff: 'multiple-nik',
-        userToken: JSON.stringify([{ userBu: { buId: 'BU01', title: 'Business Unit 1' } }])
-      })
-    }
-
     return response({
       status: 'success',
       data: {
-        user: { nik: body.nik, name: 'Tester', userBu: { title: 'Business Unit 1' } },
+        user: { nik: body.username, name: 'Tester', userBu: { title: 'Business Unit 1' } },
         token: { access: 'access-token' }
       }
     })
   }
 
-  const user = await loginPortal('12345', 'secret', '', fetchImpl)
+  const user = await loginPortal('12345', 'secret', fetchImpl)
 
-  assert.equal(calls.length, 2)
-  assert.equal(calls[1].business_unit, 'BU01')
+  assert.equal(calls.length, 1)
+  assert.equal(calls[0].url, 'https://portal.test/v1/auth/login')
+  assert.deepEqual(JSON.parse(calls[0].options.body), {
+    username: '12345',
+    password: 'secret',
+    device: 'Web'
+  })
+  assert.equal(calls[0].options.headers['X-API-Corp'], 'corp')
+  assert.equal(calls[0].options.headers['Accept-Language'], 'id')
   assert.deepEqual(user, {
     nik: '12345',
     email: '',
     name: 'Tester',
     avatar: '',
-    role: 'user',
+    role: '',
     bu: 'Business Unit 1',
     token: { access: 'access-token' }
   })
